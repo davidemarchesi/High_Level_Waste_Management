@@ -1,7 +1,7 @@
 # High Level Waste Management
 ## Energy (Nuclear) Engineering Bachelor Graduation Thesis
 
-This repository will host the study made with my collegue Matteo and for our Bachelor Thesis Project about the **High Level Waste Management**.
+This repository will host the study made with my collegue Matteo for our Bachelor Thesis Project about the **High Level Waste Management**.
 The work can be divided into three main parts:
 
 ### Waste Characterization
