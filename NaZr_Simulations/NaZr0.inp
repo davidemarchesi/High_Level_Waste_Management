@@ -1,0 +1,90 @@
+TITLE
+Sodium-Zirconium Phosphate HLW
+DEFAULTS                                                              PRECISIO
+BEAM       -6.617E-4                                                  PHOTON
+BEAMPOS            0         0         0
+BEAMPOS            0        21         0       110                    CYLI-VOL
+PHYSICS            3                                                  EVAPORAT
+PHOTONUC           1                                                  ELECTNUC
+GEOBEGIN                                                              COMBNAME
+    0    0          
+SPH Vacuumou   0 0 0 10000
+SPH Vacuumin   0 0 0 4000
+ZCC OUTcyl     0 0 21.5
+ZCC INcyl      0 0 21
+XYP OBplane    -55.5
+XYP IBplane    -55
+XYP GUPplane   55
+XYP IUplane    66.5
+XYP OUplane    67
+XYP UP1cem     2670
+XYP BOT1cem    -2555
+YZP UP2cem     2215
+YZP BOT2cem    -2215
+XZP UP3cem     2215
+XZP BOT3cem    -2215
+END
+BLKBODY      5 +Vacuumou -Vacuumin
+VOID         5 +Vacuumin -UP1cem |+Vacuumin +BOT1cem |+Vacuumin -UP2cem |+Vacuumin +BOT2cem |+Vacuumin -UP3cem |
+               +Vacuumin +BOT3cem
+CEMENT       5 -OUplane +UP1cem +UP2cem -BOT2cem +UP3cem -BOT3cem | +OBplane -BOT1cem -BOT2cem +UP2cem +UP3cem
+               -BOT3cem |-OUTcyl +UP2cem
+               -BOT2cem -BOT1cem +UP1cem +UP3cem -BOT3cem
+MTLCSK       5 +OUTcyl -INcyl +OUplane -OBplane | +OUplane -IUplane +INcyl | -OBplane +IBplane +INcyl
+INTvoid      5 -GUPplane +IUplane +INcyl
+HLW          5 +INcyl +GUPplane -IBplane
+END
+GEOEND
+MATERIAL          25                7.21                              MANGANES
+MATERIAL          15                1.82                              PHOSPHO
+MATERIAL          16                2.07                              SULFUR
+* A283GrD
+* Approximated composition of A283 Gr.D carbon stell , density taken by typical carbon steel
+MATERIAL                             7.8                              A283GrD
+COMPOUND        0.27    CARBON       0.9  MANGANES     0.035   PHOSPHOA283GrD
+COMPOUND        0.04    SULFUR       0.4   SILICON       0.2    COPPERA283GrD
+COMPOUND      98.155      IRON                                        A283GrD
+MATERIAL          19               0.862                              POTASSIU
+* Concrete portland
+* Concrete has a wide variation in density and composition.
+MATERIAL                             2.3                              PORTLAND
+COMPOUND       -0.01  HYDROGEN    -0.001    CARBON -0.529107    OXYGENPORTLAND
+COMPOUND      -0.016    SODIUM    -0.002  MAGNESIU -0.033872  ALUMINUMPORTLAND
+COMPOUND   -0.337021   SILICON    -0.013  POTASSIU    -0.044   CALCIUMPORTLAND
+COMPOUND      -0.014      IRON                                        PORTLAND
+MATERIAL          40               6.506                              ZIRCONIU
+MATERIAL          38                2.54                            90SR-90
+MATERIAL          55               1.873                           137CS-137
+MATERIAL          55               1.873                           135CS-135
+MATERIAL          55               1.873                           134CS-134
+MATERIAL          55               1.873                           133CS-133
+* Sodium-Zirconium Phosphate
+* Ceramic matrice for long disposal of Cs/Sr
+MATERIAL                            3.23                              Sodium-Z
+COMPOUND         0.5    SODIUM       2.0  ZIRCONIU       3.0   PHOSPHOSodium-Z
+COMPOUND        12.0    OXYGEN      0.15     SR-90    0.0535    CS-137Sodium-Z
+COMPOUND       0.043    CS-135    0.0453    CS-134    0.0583    CS-133Sodium-Z
+MAT-PROP                           135.2  PORTLAND
+ASSIGNMA    BLCKHOLE   BLKBODY
+ASSIGNMA      VACUUM      VOID
+ASSIGNMA     A283GrD    MTLCSK
+ASSIGNMA    PORTLAND    CEMENT
+ASSIGNMA      VACUUM   INTvoid
+ASSIGNMA    Sodium-Z       HLW
+LOW-MAT        SR-90        38        90       296                    90-SR
+LOW-MAT       CS-133        55       133       296                    CESIUM
+LOW-MAT       CS-134        55       135       296                    135-CS
+LOW-MAT       CS-135        55       135       296                    135-CS
+LOW-MAT       CS-137        55       137       296                    137-CS
+* GeV/cm3*s
+USRBIN            11    ENERGY       -21       100         0       155Energy
+USRBIN             0         0       -55       100        36       210 &
+* pSv/s | in air
+*USRBIN            11   DOSE-EQ       -22       121         0        55DoseEq
+*USRBIN             0         0       -55       121        36       110 &
+* Part/cm2*s
+USRBDX           101    PHOTON       -23       HLW    MTLCSK         1FluxCSK
+USRBDX           0.1         0       100                   0         1 &
+RANDOMIZ           1
+START        1306833
+STOP
