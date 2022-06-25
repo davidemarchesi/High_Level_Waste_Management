@@ -1,0 +1,211 @@
+# flair project file
+Version: 300
+Mode: fluka
+Title: Np Murataite HLW
+md5: 528aac20731eb8a835b617d47df2a9c6
+Input:
+TITLE
+	Np Murataite HLW
+DEFAULTS PRECISIO
+*Np-237 alpha-decay with an energy of 4.959MeV
+BEAM 4-HELIUM -0.004959
+*Distributed source to simulate the decay
+BEAMPOS , 0 0 0
+BEAMPOS CYLI-VOL 0 21 0 110
+PHYSICS EVAPORAT 3
+PHOTONUC ELECTNUC 1
+GEOBEGIN COMBNAME
+*Black body
+SPH Vacuumou 0.0 0.0 0.0 10000.0
+*Void sphere
+SPH Vacuumin 0.0 0.0 0.0 4000.0
+ZCC OUTcyl 0 0 21.5
+ZCC INcyl 0 0 21
+XYP OBplane -55.5
+XYP IBplane -55
+XYP GUPplane 55
+XYP OUplane 67
+XYP IUplane 66.5
+XYP UP1cem 2670
+XYP BOT1cem -2555
+YZP UP2cem 2215
+YZP BOT2cem -2215
+XZP UP3cem 2215
+XZP BOT3cem -2215
+END
+*Black hole
+REGION BLKBODY 5
+	+Vacuumou -Vacuumin
+*Void around
+REGION VOID 5
+	+Vacuumin -UP1cem |+Vacuumin +BOT1cem |+Vacuumin -UP2cem | +Vacuumin +BOT2cem | +Vacuumin -UP3cem |+Vacuumin +BOT3cem  
+*Target
+REGION CEMENT 5
+	-OUplane +UP1cem +UP2cem -BOT2cem +UP3cem -BOT3cem | +OBplane -BOT1cem -BOT2cem +UP2cem +UP3cem -BOT3cem | -OUTcyl 
+	+UP2cem -BOT2cem -BOT1cem +UP1cem +UP3cem -BOT3cem 
+	@select=1
+REGION MTLCSK 5
+	+OUTcyl -INcyl +OUplane -OBplane | +OUplane -IUplane +INcyl | -OBplane +IBplane +INcyl 
+REGION INTvoid 5
+	-GUPplane +IUplane +INcyl 
+REGION HLW 5
+	+INcyl +GUPplane -IBplane 
+END
+GEOEND
+MATERIAL POTASSIU 19,, 0.862
+*Concrete portland
+*Concrete has a wide variation in density and composition.
+MATERIAL PORTLAND,,, 2.3
+COMPOUND PORTLAND -0.01 HYDROGEN -0.001 CARBON -0.529107 OXYGEN -0.016 SODIUM -0.002 \
+	 MAGNESIU -0.033872 ALUMINUM -0.337021 SILICON -0.013 POTASSIU \
+	 -0.044 CALCIUM -0.014 IRON
+MATERIAL MANGANES 25,, 7.21
+MATERIAL PHOSPHO 15,, 1.82
+MATERIAL SULFUR 16,, 2.07
+*A283GrD
+*Approximated composition of A283 Gr.D carbon stell , density taken by typical carbon steel
+MATERIAL A283GrD,,, 7.8
+COMPOUND A283GrD 0.27 CARBON 0.9 MANGANES 0.035 PHOSPHO 0.04 SULFUR 0.4 SILICON 0.2 \
+	 COPPER 98.155 IRON
+MATERIAL ZIRCONIU 40,, 6.506
+MATERIAL NP-237 93,, 20.25,,, 237
+*Muratite
+*Composition of Muratite for the disposal of Np-237
+MATERIAL Muratite,,, 3.4
+COMPOUND Muratite 1.0 TITANIUM 0.24 MANGANES 0.31 CALCIUM 0.06 ZIRCONIU 0.14 ALUMINUM \
+	 0.09 IRON 3.06 OXYGEN 0.03 NP-237
+MATERIAL CHROMIUM 24,, 7.18
+MATERIAL MOLYBDEN 42,, 10.22
+MATERIAL NIOBIUM 41,, 8.57
+MATERIAL VANADIUM 23,, 6.11
+*ASTMA516
+*Approximated composition of ASTM A516 Gr.70 stainless steel , density taken by the typical gr.70 stainless steel
+MATERIAL ASTMA516,,, 7.8
+COMPOUND ASTMA516 0.22 CARBON 0.6 SILICON 1.35 MANGANES 0.03 PHOSPHO 0.03 SULFUR \
+	 0.02 ALUMINUM 0.3 CHROMIUM 0.3 COPPER 0.3 NICKEL 0.08 MOLYBDEN 0.01 \
+	 NIOBIUM 0.03 TITANIUM 0.02 VANADIUM 96.71 IRON
+MAT-PROP ,,, 135.2 PORTLAND
+LOW-MAT 243-AM NP-237 95 243 296
+*Energy Thresolds to be defined for the DPA (~50eV good for muratite)
+MAT-PROP DPA-ENER 40,,, A283GrD A283GrD 1
+MAT-PROP DPA-ENER 40,,, ASTMA516 ASTMA516 1
+MAT-PROP DPA-ENER 50,,, Muratite Muratite 1
+*..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
+ASSIGNMA , BLCKHOLE BLKBODY
+ASSIGNMA , VACUUM VOID
+ASSIGNMA , VACUUM INTvoid
+ASSIGNMA , PORTLAND CEMENT
+ASSIGNMA , A283GrD MTLCSK
+ASSIGNMA , Muratite HLW
+USRBDX AHLWMTL 99 4-HELIUM -21 HLW MTLCSK 1 0.01 0.000001 100,,, 1
+USRBIN Energy 11 ENERGY -22 100 0 155 0 0 -55 100 36 210
+USRBDX AMTLCEM 99 4-HELIUM -23 MTLCSK CEMENT 1 0.01 0.000001 100,,, 1
+USRBIN DPACSK 11 DPA-SCO -24 21.5 0 55 21 0 -55 100 36 110
+USRBIN DPAWST 11 DPA-SCO -25 21 0 55 0 0 -55 84 36 110
+*Set the random number seed
+RANDOMIZ , 1.0
+*The simulation will involve 10e6 He-4 particle, which are 10e6 alpha decays. The activity to which refer for the normalization is
+*the one at time T0 : A0 = 1.41867851*10^11 Bq.
+*Considering a simulation of 10^6 particles, the results can be normalized with a good approximation multiplying for the exact number
+*of particles (photons) at the time T0.
+START , 1000000
+STOP
+EndInput
+
+Notes:
+	|This is a numerical simulation of the behaviour of Np-Murataite ceramic HLW.
+	|For this simulation will be adopted a simplified model with a distributed beam all over the volume of the HLW of He-4 to simulate the alpha decay of Np-237.
+Page: Flair
+plotengine: Gnuplot
+
+# Run information
+Run: <default>
+	Status:   3
+	StartRun: 1653303015
+End
+
+# Plots information
+Plot: Red
+	Type: Geometry
+	basisu: 0 0 1
+	basisv: 1 0 0
+	coord: Z-X
+	extends: 213.808 97.6787
+	grid: 0
+	layer: Media
+	origin: 16.1703 0 -46.0532
+End
+Plot: Green
+	Type: Geometry
+	basisu: 0.836516 0.0173377 0.547668
+	basisv: 0.224144 0.901221 -0.370891
+	extends: 298.598 223.949
+	layer: 3D
+	origin: 9.95027 15.2704 -2.18285
+End
+Plot: Blue
+	Type: Geometry
+	basisu: 0 0 1
+	coord: Z-Y
+	extends: 100 75
+	layer: Media
+End
+Plot: Magenta
+	Type: Geometry
+	coord: X-Y
+	extends: 8 6
+	grid: 0
+	layer: Media
+	origin: 210 0 0
+End
+Plot: Murataite_0_21_plot
+	Type: USRBIN
+	cblog: 1
+	cbtics: 1
+	datafile: Murataite_0_21.bnn
+	grid: 0
+	hist: 1D Projection
+	int: 8.9384076149342308E-005
+	max: 1.32252195E-11
+	min: 1.15164423E-11
+	proj: X
+	title: USRBIN Murataite 0 21
+End
+Plot: Murataite_0_22_plot
+	Type: USRBIN
+	bxmax: 400.
+	cblog: 1
+	cbtics: 1
+	datafile: Murataite_0_22.bnn
+	grid: 0
+	hist: 2D Projection
+	int: 4.9590183107086636E-003
+	max: 2.02186393E-11
+	min: 1.14445129E-11
+	title: USRBIN Murataite 0 22
+End
+Plot: Murataite_0_23_plot
+	Type: USRBIN
+	cblog: 1
+	cbtics: 1
+	datafile: Murataite_0_23.bnn
+	grid: 0
+	hist: 2D Projection
+	int: 1.0042330599297714E-002
+	max: 9.56401625E-09
+	min: 3.91745275E-10
+	title: USRBIN Murataite 0 23
+End
+Plot: Murataite_0_24_plot
+	Type: USRBIN
+	cblog: 1
+	cbtics: 1
+	datafile: Murataite_0_24.bnn
+	grid: 0
+	hist: 1D Projection
+	int: 5.3287604412970215E-022
+	max: 3.71512902E-30
+	min: 2.95705046E-30
+	proj: X
+	title: USRBIN Murataite 0 24
+End
