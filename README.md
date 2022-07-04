@@ -13,7 +13,7 @@ to catalogue and analyse the ones for which are needed long term disposal facili
 Numerical and modellistic study, with Cern's FLUKA software for Montecarlo simulations, of different types of materials and designs needed to shield radiations from the internal wastes in order to respect
 the law-imposed limits of values of dose from the *radiation protection* point of view. Focus on the new Ceramic Waste concepts, in particular over two types of matrices : Sodium-Zirconium (for Cs137 and Sr90 disposal), Murataite (for Transuranic elements disposal, in our case is taken in consideration Np237).
 
-### Radiation Damage and brief analysis (DPA)
+### Radiation Damage brief analysis (DPA)
 We also deepened, in our work, the field of the radiation damage and the related theories. Dealing with the ceramic matrices, and radioactive waste, listed above, we did some simulations to see the effect of the two different types of decay considerated (alpha and gamma) on the materials, making some practical consideration about them.
 
 ### Conclusions
