@@ -1,5 +1,5 @@
 # 'HLW - Preliminary study on the ceramic matrices disposal solutions: NZP for Cs137 and Murataite for Np237'
-## Energy (Nuclear) Engineering Bachelor Graduation Thesis (W.I.P.)
+## Energy (Nuclear) Engineering Bachelor Graduation Thesis
 
 This repository will host the study made with my collegues for our Bachelor Thesis Project about the **High Level Waste Management**.
 The work can be divided into three main parts:
