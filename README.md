@@ -19,3 +19,4 @@ We also deepened, in our work, the field of the radiation damage and the related
 ### Conclusions
 Considerations about the simulations, from the physical, radiation protection, and managerial point of view. Pro and Cons of the partitioning process and of the use of Ceramic Waste matrices for the HLW disposal.
 
+**All these concepts are presented in the `.ppt` file in *italian*. The codes used either in MATLAB or FLUKA are shown.**
